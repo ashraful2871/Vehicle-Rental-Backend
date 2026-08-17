@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "db:make": "knex migrate:make --knexfile knexfile.ts",
-    "db:migrate": "knex migrate:latest --knexfile knexfile.ts",
-    "db:seed:make": "knex seed:make --knexfile knexfile.ts",
-    "db:seed": "knex seed:run --knexfile knexfile.ts",
+    "db:make": "knex migrate:make --knexfile src/db/knexfile.ts",
+    "db:migrate": "knex migrate:latest --knexfile src/db/knexfile.ts",
+    "db:seed:make": "knex seed:make --knexfile src/db/knexfile.ts",
+    "db:seed": "knex seed:run --knexfile src/db/knexfile.ts",
     "start:dev": "nodemon src/server.ts"
   },
   "keywords": [],
