@@ -40,6 +40,13 @@ export class VehicleRepository {
       .first();
   }
 
+  async SoftDelete(id: number) {
+    return knexInstance("vehicles")
+      .where({ id })
+      .whereNull("deleted_at")
+      .update({ deleted_at: new Date() });
+  }
+
   async create(data: CreateVehicleDTO): Promise<Vehicle> {
     const [id] = await knexInstance("vehicles").insert(data).returning("id");
 

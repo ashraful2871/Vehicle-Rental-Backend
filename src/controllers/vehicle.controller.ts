@@ -48,6 +48,20 @@ export class VehicleController {
       res.status(500).json({ error: "Internal server error" });
     }
   };
+
+  SoftDelete = async (req: Request, res: Response) => {
+    const id = Number(req.params.id);
+    try {
+      const findVehicle = await this.vehicleService.getVehicleById(id);
+      if (!findVehicle) {
+        return res.status(404).json({ error: "Vehicle not found" });
+      }
+      await this.vehicleService.SoftDelete(id);
+      res.json({ message: "Vehicle deleted successfully" });
+    } catch (error) {
+      res.status(500).json({ error: "Internal server error" });
+    }
+  };
   create = async (req: Request, res: Response) => {
     try {
       const { error, value } = vehicleSchema.validate(req.body);

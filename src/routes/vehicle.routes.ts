@@ -7,6 +7,7 @@ const vehicleController = new VehicleController();
 
 vehicleRoutes.get("/", vehicleController.getAll);
 vehicleRoutes.get("/:id", vehicleController.getById);
+vehicleRoutes.delete("/:id", vehicleController.SoftDelete);
 vehicleRoutes.post("/", upload.single("photo"), vehicleController.create);
 
 export default vehicleRoutes;

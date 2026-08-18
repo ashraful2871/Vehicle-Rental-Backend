@@ -20,6 +20,10 @@ export class VehicleService {
   async getVehicleById(id: number) {
     return this.vehicleRepository.findById(id);
   }
+
+  async SoftDelete(id: number) {
+    return this.vehicleRepository.SoftDelete(id);
+  }
   async createVehicle(data: CreateVehicleDTO) {
     return this.vehicleRepository.create(data);
   }
