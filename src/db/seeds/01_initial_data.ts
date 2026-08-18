@@ -43,7 +43,7 @@ export async function seed(knex: Knex): Promise<void> {
       customer_phone: "555-0100",
       start_date: "2024-07-29",
       end_date: "2024-08-03",
-      total_amount: 300.0, // 6 days total @ $50/day
+      total_amount: 300.0,
       status: "completed",
     },
   ]);

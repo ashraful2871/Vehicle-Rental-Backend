@@ -14,7 +14,7 @@ export async function up(knex: Knex): Promise<void> {
   await knex.schema.createTable("vehicles", (table) => {
     table.increments("id").primary();
     table.string("name").notNullable();
-    table.string("plate_number").notNullable();
+    table.string("plate_number").unique().notNullable();
     table.string("category").notNullable();
     table.decimal("daily_rate", 10, 2).notNullable();
     table.string("photo_path").nullable();

@@ -2,7 +2,7 @@ import type { Knex } from "knex";
 import * as dotenv from "dotenv";
 import * as path from "path";
 
-dotenv.config();
+dotenv.config({ path: path.join(__dirname, "../../.env") });
 
 const config: { [key: string]: Knex.Config } = {
   development: {
