@@ -35,6 +35,19 @@ export class VehicleController {
     }
   };
 
+  getById = async (req: Request, res: Response) => {
+    const id = Number(req.params.id);
+
+    try {
+      const vehicle = await this.vehicleService.getVehicleById(id);
+      if (!vehicle) {
+        return res.status(404).json({ error: "Vehicle not found" });
+      }
+      res.json(vehicle);
+    } catch (error) {
+      res.status(500).json({ error: "Internal server error" });
+    }
+  };
   create = async (req: Request, res: Response) => {
     try {
       const { error, value } = vehicleSchema.validate(req.body);

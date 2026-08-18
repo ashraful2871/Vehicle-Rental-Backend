@@ -17,6 +17,9 @@ export class VehicleService {
     return this.vehicleRepository.findAll(page, limit, category, search);
   }
 
+  async getVehicleById(id: number) {
+    return this.vehicleRepository.findById(id);
+  }
   async createVehicle(data: CreateVehicleDTO) {
     return this.vehicleRepository.create(data);
   }

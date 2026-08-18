@@ -6,6 +6,7 @@ const vehicleRoutes = Router();
 const vehicleController = new VehicleController();
 
 vehicleRoutes.get("/", vehicleController.getAll);
+vehicleRoutes.get("/:id", vehicleController.getById);
 vehicleRoutes.post("/", upload.single("photo"), vehicleController.create);
 
 export default vehicleRoutes;
