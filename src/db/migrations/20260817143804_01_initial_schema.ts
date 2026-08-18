@@ -23,7 +23,6 @@ export async function up(knex: Knex): Promise<void> {
   });
 
   // rentals table
-
   await knex.schema.createTable("rentals", (table) => {
     table.increments("id").primary();
     table
