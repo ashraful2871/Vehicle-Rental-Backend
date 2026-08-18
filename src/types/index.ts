@@ -30,4 +30,29 @@ export interface CreateVehicleDTO {
   photo_path?: string;
 }
 
+export interface Rental {
+  id: number;
+  vehicle_id: number;
+  customer_name: string;
+  customer_phone: string;
+  start_date: Date | string;
+  end_date: Date | string;
+  total_amount: number;
+  status: "booked" | "ongoing" | "completed" | "cancelled";
+  created_at: Date;
+  updated_at: Date;
+}
+
+export interface CreateRentalDTO {
+  vehicle_id: number;
+  customer_name: string;
+  customer_phone: string;
+  start_date: string;
+  end_date: string;
+}
+
+export interface UpdateRentalDTO extends Partial<CreateRentalDTO> {
+  status?: "booked" | "ongoing" | "completed" | "cancelled";
+}
+
 export interface UpdateVehicleDTO extends Partial<CreateVehicleDTO> {}
