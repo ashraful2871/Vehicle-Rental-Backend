@@ -10,6 +10,11 @@ const vehicleSchema = Joi.object({
   daily_rate: Joi.number().positive().required(),
 });
 
+const updateVehicleSchema = vehicleSchema.fork(
+  ["name", "plate_number", "category", "daily_rate"],
+  (schema) => schema.optional(),
+);
+
 export class VehicleController {
   private vehicleService: VehicleService;
 
@@ -45,6 +50,34 @@ export class VehicleController {
       }
       res.json(vehicle);
     } catch (error) {
+      res.status(500).json({ error: "Internal server error" });
+    }
+  };
+
+  update = async (req: Request, res: Response) => {
+    try {
+      const { error, value } = updateVehicleSchema.validate(req.body);
+      if (error) {
+        res.status(400).json({ error: error.details[0].message });
+        return;
+      }
+
+      const vehicleData = { ...value };
+      if (req.file) {
+        vehicleData.photo_path = req.file.path;
+      }
+
+      const updatedVehicle = await this.vehicleService.updateVehicle(
+        Number(req.params.id),
+        vehicleData,
+      );
+      if (!updatedVehicle) {
+        res.status(404).json({ error: "Vehicle not found" });
+        return;
+      }
+
+      res.json(updatedVehicle);
+    } catch (err) {
       res.status(500).json({ error: "Internal server error" });
     }
   };

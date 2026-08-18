@@ -1,6 +1,6 @@
 import knex from "knex";
 import config from "../db/knexfile";
-import { CreateVehicleDTO, Vehicle } from "../types";
+import { CreateVehicleDTO, UpdateVehicleDTO, Vehicle } from "../types";
 
 const knexInstance = knex(config.development);
 
@@ -45,6 +45,17 @@ export class VehicleRepository {
       .where({ id })
       .whereNull("deleted_at")
       .update({ deleted_at: new Date() });
+  }
+
+  async update(
+    id: number,
+    data: UpdateVehicleDTO,
+  ): Promise<Vehicle | undefined> {
+    await knexInstance("vehicles")
+      .where({ id })
+      .whereNull("deleted_at")
+      .update({ ...data, updated_at: new Date() });
+    return this.findById(id);
   }
 
   async create(data: CreateVehicleDTO): Promise<Vehicle> {

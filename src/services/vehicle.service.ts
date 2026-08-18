@@ -1,5 +1,5 @@
 import { VehicleRepository } from "../repositories/vehicle.repository";
-import { CreateVehicleDTO } from "../types";
+import { CreateVehicleDTO, UpdateVehicleDTO } from "../types";
 
 export class VehicleService {
   private vehicleRepository: VehicleRepository;
@@ -23,6 +23,10 @@ export class VehicleService {
 
   async SoftDelete(id: number) {
     return this.vehicleRepository.SoftDelete(id);
+  }
+
+  async updateVehicle(id: number, data: UpdateVehicleDTO) {
+    return this.vehicleRepository.update(id, data);
   }
   async createVehicle(data: CreateVehicleDTO) {
     return this.vehicleRepository.create(data);
