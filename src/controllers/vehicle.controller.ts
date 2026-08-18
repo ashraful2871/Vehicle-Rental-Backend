@@ -16,6 +16,24 @@ export class VehicleController {
   constructor() {
     this.vehicleService = new VehicleService();
   }
+  getAll = async (req: Request, res: Response) => {
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+    const category = req.query.category as string | undefined;
+    const search = req.query.search as string | undefined;
+
+    try {
+      const vehicles = await this.vehicleService.getAllVehicles(
+        page,
+        limit,
+        category,
+        search,
+      );
+      res.json(vehicles);
+    } catch (error) {
+      res.status(500).json({ error: "Internal server error" });
+    }
+  };
 
   create = async (req: Request, res: Response) => {
     try {

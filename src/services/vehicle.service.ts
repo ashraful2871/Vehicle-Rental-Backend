@@ -8,6 +8,15 @@ export class VehicleService {
     this.vehicleRepository = new VehicleRepository();
   }
 
+  async getAllVehicles(
+    page: number,
+    limit: number,
+    category?: string,
+    search?: string,
+  ) {
+    return this.vehicleRepository.findAll(page, limit, category, search);
+  }
+
   async createVehicle(data: CreateVehicleDTO) {
     return this.vehicleRepository.create(data);
   }
