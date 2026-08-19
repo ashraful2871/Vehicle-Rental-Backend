@@ -23,4 +23,22 @@ export class RentalService {
 
     return this.rentalRepository.create(data, totalAmount);
   }
+
+  async getRentals(
+    page: number,
+    limit: number,
+    vehicleId?: number,
+    status?: string,
+    startDate?: string,
+    endDate?: string,
+  ) {
+    return this.rentalRepository.findAll(
+      page,
+      limit,
+      vehicleId,
+      status,
+      startDate,
+      endDate,
+    );
+  }
 }

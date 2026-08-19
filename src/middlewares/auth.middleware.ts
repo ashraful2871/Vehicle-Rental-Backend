@@ -18,14 +18,19 @@ export const authenticateJwt = (
 
   try {
     const decoded = jwt.verify(
-      process.env.JWT_SECRET as string,
       token,
+      process.env.JWT_SECRET as string,
     ) as jwtPayload;
 
     req.user = decoded;
 
     next();
-  } catch (error) {
-    res.status(403).json({ error: "Forbidden: Invalid token" });
+  } catch (error: any) {
+    console.error("JWT Verification Error:", error);
+    res.status(403).json({
+      error: "Forbidden: Invalid token",
+      details: error?.message || "Unknown error",
+      tokenReceivedByServer: token,
+    });
   }
 };

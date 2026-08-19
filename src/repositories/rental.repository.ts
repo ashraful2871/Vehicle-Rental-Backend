@@ -50,4 +50,34 @@ export class RentalRepository {
       return result as Rental;
     });
   }
+  async findAll(
+    page: number,
+    limit: number,
+    vehicleId?: number,
+    status?: string,
+    startDate?: string,
+    endDate?: string,
+  ) {
+    const offset = (page - 1) * limit;
+    let query = knexInstance("rentals");
+
+    if (vehicleId) query = query.where("vehicle_id", vehicleId);
+    if (status) query = query.where("status", status);
+    if (startDate && endDate) {
+      query = query
+        .where("start_date", ">=", startDate)
+        .andWhere("end_date", "<=", endDate);
+    }
+
+    const [{ count }] = await query.clone().count("id as count");
+    const data = await query.limit(limit).offset(offset).orderBy("id", "desc");
+
+    return {
+      data,
+      total: Number(count),
+      page,
+      limit,
+      totalPages: Math.ceil(Number(count) / limit),
+    };
+  }
 }

@@ -33,4 +33,26 @@ export class RentalController {
       else res.status(500).json({ error: "Internal server error" });
     }
   };
+
+  getAll = async (req: Request, res: Response) => {
+    try {
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 10;
+      const vehicleId = req.query.vehicle_id
+        ? parseInt(req.query.vehicle_id as string)
+        : undefined;
+
+      const result = await this.rentalService.getRentals(
+        page,
+        limit,
+        vehicleId,
+        req.query.status as string,
+        req.query.start_date as string,
+        req.query.end_date as string,
+      );
+      res.json(result);
+    } catch (err) {
+      res.status(500).json({ error: "Internal server error" });
+    }
+  };
 }
