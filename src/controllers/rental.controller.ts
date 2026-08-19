@@ -55,4 +55,19 @@ export class RentalController {
       res.status(500).json({ error: "Internal server error" });
     }
   };
+
+  getById = async (req: Request, res: Response) => {
+    try {
+      const rental = await this.rentalService.getRentalById(
+        Number(req.params.id),
+      );
+      if (!rental) {
+        res.status(404).json({ error: "Rental not found" });
+        return;
+      }
+      res.json(rental);
+    } catch (err) {
+      res.status(500).json({ error: "Internal server error" });
+    }
+  };
 }

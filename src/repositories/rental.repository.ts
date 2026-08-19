@@ -80,4 +80,8 @@ export class RentalRepository {
       totalPages: Math.ceil(Number(count) / limit),
     };
   }
+
+  async findById(id: number): Promise<Rental | undefined> {
+    return knexInstance<Rental>("rentals").where({ id }).first();
+  }
 }

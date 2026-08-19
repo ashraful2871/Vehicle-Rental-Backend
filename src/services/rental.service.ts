@@ -41,4 +41,8 @@ export class RentalService {
       endDate,
     );
   }
+
+  async getRentalById(id: number) {
+    return this.rentalRepository.findById(id);
+  }
 }

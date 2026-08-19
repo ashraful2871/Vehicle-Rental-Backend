@@ -10,5 +10,6 @@ rentalRoutes.use(authenticateJwt);
 
 rentalRoutes.post("/", rentalController.create);
 rentalRoutes.get("/", rentalController.getAll);
+rentalRoutes.get("/:id", rentalController.getById);
 
 export default rentalRoutes;
