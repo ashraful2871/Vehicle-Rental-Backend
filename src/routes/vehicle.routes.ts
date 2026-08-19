@@ -1,9 +1,12 @@
 import { Router } from "express";
 import { VehicleController } from "../controllers/vehicle.controller";
 import { upload } from "../middlewares/upload.middleware";
+import { authenticateJwt } from "../middlewares/auth.middleware";
 
 const vehicleRoutes = Router();
 const vehicleController = new VehicleController();
+
+vehicleRoutes.use(authenticateJwt);
 
 vehicleRoutes.get("/", vehicleController.getAll);
 vehicleRoutes.get("/:id", vehicleController.getById);
