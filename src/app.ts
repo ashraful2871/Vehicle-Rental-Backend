@@ -13,13 +13,11 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Routes
 app.use("/auth", router);
 app.use("/vehicles", vehicleRoutes);
 app.use("/rentals", rentalRoutes);
 app.use("/reports", reportRoute);
 
-// 404 Handler
 app.use((req, res) => {
   res.status(404).json({ error: "Not Found" });
 });

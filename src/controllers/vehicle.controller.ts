@@ -113,7 +113,6 @@ export class VehicleController {
       } catch (dbErr: any) {
         if (req.file) await fs.unlink(req.file.path).catch(() => {});
         if (dbErr.code === "23505") {
-          // Postgres unique violation code
           res.status(409).json({ error: "Plate number already exists" });
           return;
         }

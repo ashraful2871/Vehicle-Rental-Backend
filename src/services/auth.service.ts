@@ -1,7 +1,6 @@
 import { StaffRepository } from "../repositories/staff.repository";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import config from "../db/knexfile";
 export class AuthService {
   private staffRepository: StaffRepository;
 

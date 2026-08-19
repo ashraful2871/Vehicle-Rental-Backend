@@ -12,7 +12,7 @@ export class ReportRepository {
     let query = knexInstance("vehicles")
       .leftJoin("rentals", function () {
         this.on("vehicles.id", "=", "rentals.vehicle_id")
-          // FIX: Use knexInstance.raw so Knex treats these as values, not columns
+
           .andOn(knexInstance.raw("rentals.start_date <= ?", [monthEnd]))
           .andOn(knexInstance.raw("rentals.end_date >= ?", [monthStart]))
           .andOnIn("rentals.status", ["ongoing", "completed"]);
