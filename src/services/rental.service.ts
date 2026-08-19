@@ -66,4 +66,8 @@ export class RentalService {
 
     return this.rentalRepository.update(id, data, totalAmount);
   }
+
+  async deleteRental(id: number) {
+    return this.rentalRepository.delete(id);
+  }
 }

@@ -107,4 +107,19 @@ export class RentalController {
       else res.status(500).json({ error: "Internal server error" });
     }
   };
+
+  delete = async (req: Request, res: Response) => {
+    try {
+      const success = await this.rentalService.deleteRental(
+        Number(req.params.id),
+      );
+      if (!success) {
+        res.status(404).json({ error: "Rental not found" });
+        return;
+      }
+      res.json({ message: "Rental deleted successfully" });
+    } catch (err) {
+      res.status(500).json({ error: "Internal server error" });
+    }
+  };
 }

@@ -12,6 +12,6 @@ rentalRoutes.post("/", rentalController.create);
 rentalRoutes.get("/", rentalController.getAll);
 rentalRoutes.get("/:id", rentalController.getById);
 rentalRoutes.put("/:id", rentalController.update);
-// rentalRoutes.delete("/:id", rentalController.delete);
+rentalRoutes.delete("/:id", rentalController.delete);
 
 export default rentalRoutes;

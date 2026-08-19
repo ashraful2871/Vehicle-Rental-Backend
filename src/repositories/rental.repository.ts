@@ -121,4 +121,9 @@ export class RentalRepository {
       return trx("rentals").where({ id }).first() as Promise<Rental>;
     });
   }
+
+  async delete(id: number): Promise<boolean> {
+    const deleted = await knexInstance("rentals").where({ id }).del();
+    return deleted > 0;
+  }
 }
