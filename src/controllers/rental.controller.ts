@@ -10,6 +10,17 @@ const createRentalSchema = Joi.object({
   end_date: Joi.date().iso().min(Joi.ref("start_date")).required(),
 });
 
+const updateRentalSchema = createRentalSchema
+  .fork(
+    ["vehicle_id", "customer_name", "customer_phone", "start_date", "end_date"],
+    (schema) => schema.optional(),
+  )
+  .keys({
+    status: Joi.string()
+      .valid("booked", "ongoing", "completed", "cancelled")
+      .optional(),
+  });
+
 export class RentalController {
   private rentalService = new RentalService();
 
@@ -68,6 +79,32 @@ export class RentalController {
       res.json(rental);
     } catch (err) {
       res.status(500).json({ error: "Internal server error" });
+    }
+  };
+
+  update = async (req: Request, res: Response) => {
+    try {
+      const { error, value } = updateRentalSchema.validate(req.body);
+      if (error) {
+        res.status(400).json({ error: error.details[0].message });
+        return;
+      }
+
+      const updatedRental = await this.rentalService.updateRental(
+        Number(req.params.id),
+        value,
+      );
+      res.json(updatedRental);
+    } catch (err: any) {
+      if (err.message === "OVERLAP_ERROR")
+        res
+          .status(409)
+          .json({ error: "Vehicle is already booked for these dates" });
+      else if (err.message === "NOT_FOUND")
+        res.status(404).json({ error: "Rental not found" });
+      else if (err.message === "VEHICLE_NOT_FOUND")
+        res.status(404).json({ error: "Vehicle not found" });
+      else res.status(500).json({ error: "Internal server error" });
     }
   };
 }

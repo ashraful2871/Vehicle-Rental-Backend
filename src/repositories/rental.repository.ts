@@ -1,5 +1,5 @@
 import knex from "knex";
-import { CreateRentalDTO, Rental } from "../types";
+import { CreateRentalDTO, Rental, UpdateRentalDTO } from "../types";
 import config from "../db/knexfile";
 
 const knexInstance = knex(config.development);
@@ -83,5 +83,42 @@ export class RentalRepository {
 
   async findById(id: number): Promise<Rental | undefined> {
     return knexInstance<Rental>("rentals").where({ id }).first();
+  }
+  async update(
+    id: number,
+    data: UpdateRentalDTO,
+    totalAmount?: number,
+  ): Promise<Rental> {
+    return knexInstance.transaction(async (trx) => {
+      const existing = await trx<Rental>("rentals").where({ id }).first();
+      if (!existing) throw new Error("NOT_FOUND");
+
+      const checkStartDate = data.start_date || (existing.start_date as string);
+      const checkEndDate = data.end_date || (existing.end_date as string);
+      const checkVehicleId = data.vehicle_id || existing.vehicle_id;
+
+      if (
+        data.start_date ||
+        data.end_date ||
+        data.vehicle_id ||
+        (data.status && ["booked", "ongoing"].includes(data.status))
+      ) {
+        const overlap = await this.checkOverlapQuery(
+          trx("rentals"),
+          checkVehicleId,
+          checkStartDate as string,
+          checkEndDate as string,
+          id,
+        ).first();
+
+        if (overlap) throw new Error("OVERLAP_ERROR");
+      }
+
+      const updatePayload: any = { ...data, updated_at: new Date() };
+      if (totalAmount !== undefined) updatePayload.total_amount = totalAmount;
+
+      await trx("rentals").where({ id }).update(updatePayload);
+      return trx("rentals").where({ id }).first() as Promise<Rental>;
+    });
   }
 }
